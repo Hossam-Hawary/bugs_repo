@@ -21,8 +21,8 @@ ActiveRecord::Schema.define(version: 20170609000852) do
     t.integer  "state_id"
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
-    t.index ["number"], name: "index_bugs_on_number", using: :btree
     t.index ["state_id"], name: "index_bugs_on_state_id", using: :btree
+    t.index ["token", "number"], name: "index_bugs_on_token_and_number", using: :btree
   end
 
   create_table "states", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

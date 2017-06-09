@@ -10,6 +10,6 @@ class CreateBugs < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
-    add_index :bugs, :number
+    add_index :bugs, [:token, :number]
   end
 end

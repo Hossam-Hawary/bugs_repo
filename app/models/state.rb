@@ -1,5 +1,5 @@
 class State < ApplicationRecord
-  has_one :bug
-  validates :devise, :os, :memory, :storage, :presence: true
+  has_one :bug, dependent: :destroy
+  validates :devise, :os, :memory, :storage, presence: true
 
 end
