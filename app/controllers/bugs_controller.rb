@@ -1,5 +1,4 @@
 class BugsController < ApplicationController
-  before_action :varify_app
   skip_before_action :verify_authenticity_token
 
   def index
@@ -21,7 +20,7 @@ class BugsController < ApplicationController
     if @bug
       render :json => {success: true, status: 200, bug:@bug.as_json }
     else
-      render :json => {success: false, status: 400, number:params['number'], token:params['token'], bug:'Not_found'}
+      render :json => {success: false, status: 404, message:"Not Found", number:params['number'], token:params['token'], bug:nil}
     end
 
   end
@@ -36,9 +35,6 @@ class BugsController < ApplicationController
   ############
   private
   ###########
-  def varify_app
-    #need to make sure Token is present
-  end
 
   def validate_bugs_params
     bug = params['bug']
