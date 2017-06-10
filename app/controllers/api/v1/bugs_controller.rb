@@ -17,7 +17,7 @@ module Api::V1
     end
 
     def show
-      @bug = Api::V1::Bug.find_by( number:params['number'], token:params['token'])
+      @bug = Api::V1::Bug.find_by(  token:params['token'], number:params['number'])
       if @bug
         render :json => {success: true, status: 200, bug:@bug.as_json }
       else
