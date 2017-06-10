@@ -1,5 +1,6 @@
 class BugsController < ApplicationController
   before_action :varify_app
+  skip_before_action :verify_authenticity_token
 
   def index
       @bugs = Bug.where(token:params['token'])
@@ -7,13 +8,12 @@ class BugsController < ApplicationController
   end
 
   def create
-    @bug = Bug.generate_new_bug bug_params, state_params
-    if @bug
-      render :json => {success: true, status: 200, bug:@bug.as_json }
+    if validate_bugs_params
+      RabbitMg.send_message("{bug_params:#{bug_params.to_json},state_params:#{state_params.to_json}}")
+      render :json => {success: true, status: 200, message:"will Report This Issue" }
     else
-      render :json => {success: false, status: 400, action:'create' }
+      render :json => {success: false, status: 400, action:'create',params:params, message:'Missing Params' }
     end
-
   end
 
   def show
@@ -40,12 +40,18 @@ class BugsController < ApplicationController
     #need to make sure Token is present
   end
 
-  def bug_params
-    params.require('bug').primit(:token, :priority)
+  def validate_bugs_params
+    bug = params['bug']
+    state = params['state']
+    return bug.present? && state.present? && bug['token'].present? && state['devise'].present? && state['os'].present? && state['memory'].present?  && state['storage'].present?
   end
-  
+
+  def bug_params
+    params.require('bug').permit(:token, :priority)
+  end
+
   def state_params
-    params.require('state').primit(:devise, :os, :memory, :storage)
+    params.require('state').permit(:devise, :os, :memory, :storage)
   end
 
 
