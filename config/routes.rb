@@ -14,4 +14,5 @@ Rails.application.routes.draw do
             get "/bugs/:number", to: "bugs#show"
           end
     end
+    get 'search', to: 'search#search'
   end

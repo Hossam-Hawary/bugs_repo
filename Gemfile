@@ -38,6 +38,8 @@ gem "bunny", ">= 2.7.0"
 gem 'sneakers'
 gem 'redis-rails'
 gem 'redis-namespace'
+gem 'elasticsearch-model', github: 'elastic/elasticsearch-rails', branch: '5.x'
+gem 'elasticsearch-rails', github: 'elastic/elasticsearch-rails', branch: '5.x'
 
 
 

@@ -1,0 +1,22 @@
+<h1>Bugs Search</h1>
+
+<%= form_for search_path, method: :get do |f| %>
+  <p>
+    <%= f.label "Search for" %>
+    <%= text_field_tag :q, params[:q] %>
+    <%= submit_tag "Go", name: nil %>
+  </p>
+<% end %>
+
+<ul>
+  <% @bugs.each do |bug| %>
+    <li>
+      <h3>
+        <%=bug.number%> -   <%=bug.status%> -   <%=bug.priority%>
+      </h3>
+      <h2>
+        <%=bug.comment%>
+      </h2>
+    </li>
+  <% end %>
+</ul>
