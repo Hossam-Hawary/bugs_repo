@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170609000852) do
+ActiveRecord::Schema.define(version: 20170610154634) do
 
   create_table "bugs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "token"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20170609000852) do
     t.datetime "updated_at",                           null: false
     t.index ["state_id"], name: "index_bugs_on_state_id", using: :btree
     t.index ["token", "number"], name: "index_bugs_on_token_and_number", using: :btree
+    t.index ["token"], name: "index_bugs_on_token", using: :btree
   end
 
   create_table "states", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

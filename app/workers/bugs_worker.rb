@@ -5,7 +5,7 @@ class BugsWorker
   def work(msg)
 
     data = eval msg
-    bug = Bug.generate_new_bug( data[:bug_params], data[:state_params])
+    bug = Api::V1::Bug.generate_new_bug( data[:bug_params], data[:state_params])
     ack! # we need to let queue know that message was received
   end
 
