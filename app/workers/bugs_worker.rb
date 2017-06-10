@@ -1,7 +1,7 @@
 require 'sneakers' # don't forget to put gem "sneakers" in your Gemfile
 class BugsWorker
   include Sneakers::Worker
-  from_queue :examplequeue
+  from_queue "new_bugs.queue", timeout_job_after: 5.minutes
   def work(msg)
 
     data = eval msg

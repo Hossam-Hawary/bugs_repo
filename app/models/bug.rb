@@ -17,6 +17,10 @@ class Bug < ApplicationRecord
     return false
   end
 
+  def self.app_bugs(token)
+    Bug.where(token:token)
+  end
+
   def as_json
     {
       'token' => token,

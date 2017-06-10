@@ -8,8 +8,7 @@ class BugsController < ApplicationController
 
   def create
     if validate_bugs_params
-      RabbitMg.send_message("{bug_params:#{bug_params.to_json},state_params:#{state_params.to_json}}")
-      render :json => {success: true, status: 200, message:"will Report This Issue" }
+      report_new_bug
     else
       render :json => {success: false, status: 400, action:'create',params:params, message:'Missing Params' }
     end
@@ -48,6 +47,14 @@ class BugsController < ApplicationController
 
   def state_params
     params.require('state').permit(:devise, :os, :memory, :storage)
+  end
+
+  def report_new_bug
+    bug_num = BugService.set_new_bug bug_params['token']
+    new_bug_params =  bug_params
+    new_bug_params['number'] = bug_num
+    RabbitMg.send_message("{bug_params:#{new_bug_params.to_json},state_params:#{state_params.to_json}}")
+    render :json => {success: true, status: 200, message:"will Report This Issue", bug:new_bug_params }
   end
 
 

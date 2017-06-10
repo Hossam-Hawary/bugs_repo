@@ -36,6 +36,9 @@ gem 'jbuilder', '~> 2.5'
 # gem 'jwt'
 gem "bunny", ">= 2.7.0"
 gem 'sneakers'
+gem 'redis-rails'
+gem 'redis-namespace'
+
 
 
 group :development, :test do
