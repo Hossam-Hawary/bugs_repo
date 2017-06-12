@@ -65,5 +65,6 @@ end
 
 
   end
+  Bug.__elasticsearch__.create_index!
   Bug.import
 end

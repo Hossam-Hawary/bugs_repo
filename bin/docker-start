@@ -1,0 +1,38 @@
+#!/bin/sh
+
+set -x
+
+
+# until psql -h $POSTGRESQL_HOST -U "postgres" -c '\l'; do
+#   >&2 echo "Postgres is unavailable - sleeping"
+#   sleep 1
+# done
+
+# # wait for postgresql
+# until nc -vz $POSTGRESQL_HOST 5432; do
+#   echo "Postgresql is not ready, sleeping..."
+#   sleep 1
+# done
+# echo "Postgresql is ready, starting Rails."
+
+# # wait for elasticsearch
+# until nc -vz $ELASTICSEARCH_HOST 9200; do
+#   echo "Elasticsearch is not ready, sleeping..."
+#   sleep 1
+# done
+# echo "Elasticsearch is ready, starting Rails."
+
+
+
+
+# optional
+# rm /rails/tmp/pids/server.pid
+
+# setup database and start puma
+ RAILS_ENV=development bundle exec rake db:reset
+
+# RAILS_ENV=development bundle exec rake db:create
+# RAILS_ENV=development bundle exec rake db:migrate
+# RAILS_ENV=development bundle exec rake db:seed
+RAILS_ENV=development bundle exec rails s -p 3000 -b '0.0.0.0'
+# WORKERS=BugsWorker rake sneakers:run

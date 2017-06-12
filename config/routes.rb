@@ -7,9 +7,10 @@ Rails.application.routes.draw do
             get "/bugs/:number", to: "bugs#show"
           end
           ############################
-            # remove the constraints to make it the default version....
+            # add the constraints to make it the default version....
           ###########################
-          scope module: :v2, constraints: ApiConstraint.new(version:2)do
+          #scope module: :v2 do , constraints: ApiConstraint.new(version:2) do
+          scope module: :v2 do 
             resources :bugs, only:[:index, :create,:update, :destroy ]
             get "/bugs/:number", to: "bugs#show"
           end

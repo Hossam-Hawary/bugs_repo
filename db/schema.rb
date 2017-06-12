@@ -12,20 +12,23 @@
 
 ActiveRecord::Schema.define(version: 20170609000852) do
 
-  create_table "bugs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "bugs", force: :cascade do |t|
     t.string   "token"
     t.integer  "number"
-    t.integer  "status",                   default: 1
-    t.integer  "priority",                 default: 1
-    t.text     "comment",    limit: 65535
+    t.integer  "status",     default: 1
+    t.integer  "priority",   default: 1
+    t.text     "comment"
     t.integer  "state_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.index ["state_id"], name: "index_bugs_on_state_id", using: :btree
     t.index ["token", "number"], name: "index_bugs_on_token_and_number", using: :btree
   end
 
-  create_table "states", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "states", force: :cascade do |t|
     t.string   "devise"
     t.string   "os"
     t.integer  "memory"
