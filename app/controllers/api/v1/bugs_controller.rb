@@ -44,7 +44,7 @@ module Api::V1
     end
 
     def bug_params
-      params.require('bug').permit(:token, :priority)
+      params.require('bug').permit(:token, :priority, :comment)
     end
 
     def state_params

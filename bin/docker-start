@@ -2,11 +2,18 @@
 
 set -x
 
+# while ! nc -q1-z rabbitmq 5672; do sleep 3; done
 
 # until psql -h $POSTGRESQL_HOST -U "postgres" -c '\l'; do
 #   >&2 echo "Postgres is unavailable - sleeping"
 #   sleep 1
 # done
+
+# until [ "`/usr/bin/docker inspect -f {{.State.Running}} rabbitmq`" == "true" ]; do
+#     echo "rabbitmq is not ready, sleeping..."
+#     sleep 2;
+# done;
+ # echo "rabbitmq is ready, starting Rails."
 
 # # wait for postgresql
 # until nc -vz $POSTGRESQL_HOST 5432; do

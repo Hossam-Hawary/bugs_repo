@@ -35,7 +35,6 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 # gem 'jwt'
 gem "bunny", ">= 2.7.0"
-gem 'sneakers'
 gem 'redis-rails'
 gem 'redis-namespace'
 gem 'elasticsearch-model', github: 'elastic/elasticsearch-rails', branch: '5.x'

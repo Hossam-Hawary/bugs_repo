@@ -8,6 +8,8 @@ services:
     image: postgres
     volumes:
       - postgres:/var/lib/postgresql/data
+  rabbitmq:
+    image: rabbitmq:3.6
   redis:
     image: redis
     volumes:
@@ -21,10 +23,14 @@ services:
       - POSTGRESQL_PASSWORD=
       - POSTGRESQL_USERNAME=postgres
       - REDIS_HOST=redis
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
     links:
       - postgres
       - elasticsearch
       - redis
+      - rabbitmq
     volumes:
       - .:/bugs_app
     ports:
@@ -33,7 +39,9 @@ services:
       - postgres
       - elasticsearch
       - redis
+      - rabbitmq
 volumes:
   elasticsearch: {}
   postgres: {}
   redis: {}
+  

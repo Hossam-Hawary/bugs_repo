@@ -1,27 +1,32 @@
 
 
 class RabbitMg
-  #CLOUDAMQP_URL = ENV['CLOUDAMQP_URL'] #in production
-
-  CLOUDAMQP_URL = 'amqp://uccpeoea:3zZzuv8Iebb6h4lGR9vqPXaVqPsOHt9c@orangutan.rmq.cloudamqp.com/uccpeoea'
   def self.init_rabbit_mq
+    begin
+      #Returns a connection instance
+      @@conn = Bunny.new(
+       :host =>  "#{ENV.fetch('RABBITMQ_HOST', 'rabbitmq')}",
+       :user =>  "#{ENV.fetch('RABBITMQ_USER', 'guest')}" ,
+       :password => "#{ENV.fetch('RABBITMQ_PASSWORD', 'guest')}")
+      #The connection will be established when start is called
+      @@conn.start
+      #create a channel in the TCP connection
+      ch = @@conn.create_channel
 
-    #Returns a connection instance
-    @@conn = Bunny.new CLOUDAMQP_URL #ENV['CLOUDAMQP_URL'] in production
-    #The connection will be established when start is called
-    @@conn.start
+      #Declare a queue with a given name, examplequeue. In this example is a durable shared queue used.
+      @@queue  = ch.queue("new_bugs.queue", :durable => true)
 
-    #create a channel in the TCP connection
-    ch = @@conn.create_channel
+      #For messages to be routed to queues, queues need to be bound to exchanges.
+      @@x = ch.direct("new_bugs.exchange", :durable => true)
 
-    #Declare a queue with a given name, examplequeue. In this example is a durable shared queue used.
-    @@queue  = ch.queue("new_bugs.queue", :durable => true)
+      #Bind a queue to an exchange
+      @@queue.bind(@@x, :routing_key => "new_bugs")
 
-    #For messages to be routed to queues, queues need to be bound to exchanges.
-    @@x = ch.direct("new_bugs.exchange", :durable => true)
-
-    #Bind a queue to an exchange
-    @@queue.bind(@@x, :routing_key => "new_bugs")
+      rescue Bunny::TCPConnectionFailed => e
+        puts "Connection to rabbitmq failed.....will try again"
+        sleep 1
+        RabbitMg.init_rabbit_mq
+    end
   end
 
   def self.send_message(information_message)
@@ -31,6 +36,12 @@ class RabbitMg
     )
   end
 
+  def self.subscribe_queue
+         @@queue.subscribe(:consumer_tag => "bugs_repo_consumer_001",  :manual_ack => true) do |delivery_info, properties, payload|
+           data = eval payload
+           bug = Api::V1::Bug.generate_new_bug( data[:bug_params], data[:state_params])
+         end
+  end
 
   def self.get_queue
     @@queue
@@ -42,4 +53,6 @@ class RabbitMg
 end
 
 RabbitMg.init_rabbit_mq
-#RabbitMg.close
+Rails.application.config.after_initialize do
+        RabbitMg.subscribe_queue
+ end

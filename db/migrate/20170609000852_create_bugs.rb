@@ -3,8 +3,8 @@ class CreateBugs < ActiveRecord::Migration[5.0]
     create_table :bugs do |t|
       t.string :token
       t.integer :number
-      t.integer :status, default:1
-      t.integer :priority, default:1
+      t.string :status, default: :new_bug
+      t.string :priority, default: :major
       t.text :comment
       t.references :state, foreign_key: true
 

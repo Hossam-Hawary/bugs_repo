@@ -7,8 +7,8 @@ module Api::V1
 
     belongs_to :state, dependent: :destroy
     validates :token, presence: true
-    enum priority: { minor: 1, major: 2, critical: 3 }
-    enum status: { 'new_bug': 1, 'in_progress': 2, 'closed': 3 }
+    enum priority: [ :minor, :major, :critical ]
+    enum status: [ :new_bug, :in_progress, :closed ]
 
     def self.generate_new_bug(bug_params, state_params)
         state = Api::V1::State.new(state_params)
@@ -58,13 +58,12 @@ end
       mappings dynamic: 'false' do
         indexes :comment, analyzer: 'english'
         indexes :number, type: :integer
-        indexes :status, type: :integer
-        indexes :priority, type: :integer
+        indexes :status, type: :keyword
+        indexes :priority, type: :keyword
       end
     end
 
 
   end
-  Bug.__elasticsearch__.create_index!
-  Bug.import
+  Bug.import force: true
 end

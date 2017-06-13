@@ -4,7 +4,7 @@ class SearchController < ApplicationController
   if params[:q].nil?
     @bugs = []
   else
-    @bugs = Api::V1::Bug.search_by_field params[:q], 'status'
+    @bugs = Api::V1::Bug.search_by_field params[:q], "comment"
   end
 end
 end
