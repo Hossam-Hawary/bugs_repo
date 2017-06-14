@@ -4,7 +4,7 @@ module Api::V1
     skip_before_action :verify_authenticity_token
 
     def index
-        @bugs = Api::V1::Bug.where(token:params['token'])
+        @bugs = (Api::V1::Bug.where(token:params['token'])).to_a.map! {|bug|  bug.bug_as_json}
         render :json => {success: true, status: 200, bugs:@bugs }
     end
 

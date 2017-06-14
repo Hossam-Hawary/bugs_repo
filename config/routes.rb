@@ -5,12 +5,13 @@ Rails.application.routes.draw do
           scope module: :v1, constraints: ApiConstraint.new(version:1) do
             resources :bugs, only:[:index, :create,:update, :destroy ]
             get "/bugs/:number", to: "bugs#show"
+            get 'search', to: 'search#search'
           end
           ############################
             # add the constraints to make it the default version....
           ###########################
           #scope module: :v2 do , constraints: ApiConstraint.new(version:2) do
-          scope module: :v2 do 
+          scope module: :v2 do
             resources :bugs, only:[:index, :create,:update, :destroy ]
             get "/bugs/:number", to: "bugs#show"
           end

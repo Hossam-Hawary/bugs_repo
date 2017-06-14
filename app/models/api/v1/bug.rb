@@ -60,6 +60,7 @@ end
         indexes :number, type: :integer
         indexes :status, type: :keyword
         indexes :priority, type: :keyword
+        indexes :token, type: :keyword
       end
     end
 
