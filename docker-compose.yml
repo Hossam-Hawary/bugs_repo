@@ -1,7 +1,9 @@
 version: '3'
 services:
   elasticsearch:
-    image: elasticsearch:5
+    build:
+      context: .
+      dockerfile: elasticsearch.Dockerfile
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
   postgres:
@@ -9,9 +11,13 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
   rabbitmq:
-    image: rabbitmq:3.6
+    build:
+      context: .
+      dockerfile: rabbitmq.Dockerfile
   redis:
-    image: redis
+    build:
+      context: .
+      dockerfile: redis.Dockerfile
     volumes:
       - redis:/data
   web:
@@ -44,4 +50,3 @@ volumes:
   elasticsearch: {}
   postgres: {}
   redis: {}
-  

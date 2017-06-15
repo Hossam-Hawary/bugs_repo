@@ -1,1 +1,1 @@
-$redis = Redis::Namespace.new("bugs:#{Rails.env}", redis: Redis.new(:host => ENV.fetch('REDIS_HOST', 'localhost')))
+$redis = Redis::Namespace.new("bugs:#{Rails.env}", redis: Redis.new(:host => ENV.fetch('REDIS_HOST', 'localhost'),port:6373))
