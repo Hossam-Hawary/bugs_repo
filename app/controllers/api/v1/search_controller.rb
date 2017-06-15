@@ -1,13 +1,12 @@
 module Api::V1
 
   class SearchController < ApplicationController
-    skip_before_action :varify_app
     def search
-      if params[:key].blank?
-      render :json => {success: false, status: 400, message:" No Keyword Provided for search!", bugs:[] }
-      else
-        bugs =  params[:field].present? ? ( Api::V1::Bug.search_by_field params[:key], params[:field]) : (Api::V1::Bug.search params[:key])
+      if params[:key].present? && params[:field].present?
+        bugs = Api::V1::Bug.search_by_field params[:token], params[:key], params[:field]
         render :json => {success: true, status: 200, bugs:bugs.to_a.map! {|bug| bug['_source']}}
+      else
+        render :json => {success: false, status: 400, message:" No Keyword or field Provided for search!", bugs:[] }
       end
     end
 

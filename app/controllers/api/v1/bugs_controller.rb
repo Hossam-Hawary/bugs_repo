@@ -12,7 +12,7 @@ module Api::V1
       if validate_bugs_params
         report_new_bug
       else
-        render :json => {success: false, status: 400, action:'create',params:params, message:'Missing Params' }
+        render :json => {success: false, status: 400,params:params, message:'Invalid Params!' }
       end
     end
 
@@ -40,7 +40,7 @@ module Api::V1
     def validate_bugs_params
       bug = params['bug']
       state = params['state']
-      return bug.present? && state.present? && bug['token'].present? && state['devise'].present? && state['os'].present? && state['memory'].present?  && state['storage'].present?
+      return   bug.try(:[],:token).present? && (bug[:token] == params[:token]) && state.try(:[],:devise).present? && state[:os].present? && state[:memory].present? && state[:storage].present?
     end
 
     def bug_params

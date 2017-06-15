@@ -36,18 +36,20 @@ module Api::V1
 
     def as_indexed_json(options = nil)
       self.as_json({
-        only: [:number, :status, :priority, :comment ]
+        only: [:number, :status, :priority, :comment, :token ]
       })
     end
 
 
-    def self.search_by_field(query, *fields)
+    def self.search_by_field(token, query, field)
       __elasticsearch__.search(
         {
           query: {
-            multi_match: {
-              query: query,
-              fields: [] + fields
+            bool: {
+              must: { match: { field => query }},
+              filter: {
+                term: { token: token }
+              }
             }
           }
         }
