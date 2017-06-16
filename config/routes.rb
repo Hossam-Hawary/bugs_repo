@@ -14,6 +14,7 @@ Rails.application.routes.draw do
           scope module: :v2 do
             resources :bugs, only:[:index, :create,:update, :destroy ]
             get "/bugs/:number", to: "bugs#show"
+            get 'search', to: 'search#search'
           end
     end
     get 'search', to: 'search#search'

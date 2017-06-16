@@ -55,10 +55,30 @@ module Api::V1
         }
       )
 end
+    bug_es_settings = {
+      index: {
+        analysis: {
+          filter: {
+            comment_filter: {
+              type: :edge_ngram,
+              min_gram: 1,
+              max_gram: 4
+            }
+          },
+          analyzer:{
+            partial_comment: {
+              type: :custom,
+              tokenizer: :standard,
+              filter: [:lowercase, :comment_filter]
+            }
+          }
+        }
+      }
+    }
 
-    settings index: { number_of_shards: 1 } do
+    settings bug_es_settings do
       mappings dynamic: 'false' do
-        indexes :comment, analyzer: 'english'
+        indexes :comment, analyzer: :partial_comment
         indexes :number, type: :integer
         indexes :status, type: :keyword
         indexes :priority, type: :keyword
@@ -68,5 +88,5 @@ end
 
 
   end
-  Bug.import force: true
+  Bug.__elasticsearch__.import force: true
 end
