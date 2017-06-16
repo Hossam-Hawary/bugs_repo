@@ -11,8 +11,6 @@ default: &default
   password: <%= ENV.fetch('POSTGRESQL_PASSWORD', '') %>
   username: <%= ENV.fetch('POSTGRESQL_USERNAME', 'postgres') %>
   host: <%= ENV.fetch('POSTGRESQL_HOST', 'localhost') %>
-  port: 5431
-
 development:
   <<: *default
   database: bugs_repo_dev
