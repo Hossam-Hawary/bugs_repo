@@ -40,7 +40,7 @@ services:
     volumes:
       - .:/bugs_app
     ports:
-      - "3000:3000"
+      - "3003:3000"
     depends_on:
       - postgres
       - elasticsearch
