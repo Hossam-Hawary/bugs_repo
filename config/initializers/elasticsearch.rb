@@ -2,7 +2,7 @@ config = {
   host: ENV.fetch('ELASTICSEARCH_HOST', 'localhost'),
   port:9400,
   transport_options: {
-    request: { timeout: 5.minutes }
+    request: { timeout: 2.minutes }
   },
 }
 

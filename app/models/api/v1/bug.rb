@@ -86,7 +86,14 @@ end
       end
     end
 
+    def self.indexing_bugs
+      begin
+        Bug.__elasticsearch__.import force: true
+        rescue Faraday::ConnectionFailed
+          puts "Connection to __elasticsearch__ failed..... please try again"
+      end
+    end
 
   end
-  Bug.__elasticsearch__.import force: true
+  Bug.indexing_bugs
 end

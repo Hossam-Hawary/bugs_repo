@@ -5,7 +5,7 @@ module Api::V1
 
     def index
         @bugs = (Api::V1::Bug.where(token:params['token'])).to_a.map! {|bug|  bug.bug_as_json}
-        render :json => {success: true, status: 200, bugs:@bugs }
+        render :json => {success: true, status: 200, bugs:@bugs, api_version:params[:controller] }
     end
 
     def create
@@ -19,7 +19,7 @@ module Api::V1
     def show
       @bug = Api::V1::Bug.find_by(  token:params['token'], number:params['number'])
       if @bug
-        render :json => {success: true, status: 200, bug:@bug.bug_as_json }
+        render :json => {success: true, status: 200, api_version:params[:controller], bug:@bug.bug_as_json }
       else
         render :json => {success: false, status: 404, message:"Not Found", number:params['number'], token:params['token'], bug:nil}
       end
@@ -27,12 +27,13 @@ module Api::V1
     end
 
     def update
-      render :json => {success: true, status: 200, action:'update', controller:'bugs'}
+      render :json => {success: true, status: 200, action:'update', api_version:params[:controller]}
     end
 
     def destroy
-      render :json => {success: true, status: 200, action:'destroy', controller:'bugs'}
+      render :json => {success: true, status: 200, action:'destroy', api_version:params[:controller]}
     end
+    
     ############
     protected
     ###########
@@ -51,12 +52,19 @@ module Api::V1
       params.require('state').permit(:devise, :os, :memory, :storage)
     end
 
+    #find BugService in lib/bug_service.rb
+    #find RabbitMg in intializers/bunny.rb
     def report_new_bug
       bug_num = BugService.set_new_bug bug_params['token']
-      new_bug_params =  bug_params
-      new_bug_params['number'] = bug_num
-      RabbitMg.send_message("{bug_params:#{new_bug_params.to_json},state_params:#{state_params.to_json}}")
-      render :json => {success: true, status: 200, message:"will Report This Issue", bug:new_bug_params }
+      if bug_num
+        new_bug_params =  bug_params
+        new_bug_params['number'] = bug_num
+        RabbitMg.send_message("{bug_params:#{new_bug_params.to_json},state_params:#{state_params.to_json}}")
+        render :json => {success: true, status: 200, message:"will Report This Issue", bug:new_bug_params }
+      else
+        render :json => {success: false, status: 500, api_version:params[:controller], message:'Internal Error! .. Try Again' }
+      end
+
     end
 
 

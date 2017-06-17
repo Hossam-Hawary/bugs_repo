@@ -7,6 +7,7 @@ Rails.application.routes.draw do
             get "/bugs/:number", to: "bugs#show"
             get 'search', to: 'search#search'
           end
+          
           ############################
             # add the constraints to make it the default version....
           ###########################
@@ -17,5 +18,4 @@ Rails.application.routes.draw do
             get 'search', to: 'search#search'
           end
     end
-    get 'search', to: 'search#search'
   end
