@@ -12,7 +12,7 @@ module Api::V1
       if validate_bugs_params
         report_new_bug
       else
-        render :json => {success: false, status: 400,params:params, message:'Invalid Params!' }
+        render :json => {success: false, status: 400,params:params, message:'Invalid Params!', api_version:params[:controller] }
       end
     end
 
@@ -21,7 +21,7 @@ module Api::V1
       if @bug
         render :json => {success: true, status: 200, api_version:params[:controller], bug:@bug.bug_as_json }
       else
-        render :json => {success: false, status: 404, message:"Not Found", number:params['number'], token:params['token'], bug:nil}
+        render :json => {success: false, status: 404, message:"Not Found", number:params['number'], token:params['token'], api_version:params[:controller]}
       end
 
     end
@@ -33,7 +33,7 @@ module Api::V1
     def destroy
       render :json => {success: true, status: 200, action:'destroy', api_version:params[:controller]}
     end
-    
+
     ############
     protected
     ###########

@@ -18,8 +18,8 @@ services:
     build:
       context: .
       dockerfile: redis.Dockerfile
-    volumes:
-      - redis:/data
+    # volumes:
+    #   - redis:/data
   web:
     build: .
     command: bin/docker-start
@@ -40,7 +40,7 @@ services:
     volumes:
       - .:/bugs_app
     ports:
-      - "3003:3000"
+      - "3030:3000"
     depends_on:
       - postgres
       - elasticsearch
@@ -49,4 +49,4 @@ services:
 volumes:
   elasticsearch: {}
   postgres: {}
-  redis: {}
+  # redis: {}

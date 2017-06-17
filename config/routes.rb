@@ -1,13 +1,13 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-
+  root 'application#home'
     namespace :api, :defaults => { :format => 'json' }do
           scope module: :v1, constraints: ApiConstraint.new(version:1) do
             resources :bugs, only:[:index, :create,:update, :destroy ]
             get "/bugs/:number", to: "bugs#show"
             get 'search', to: 'search#search'
           end
-          
+
           ############################
             # add the constraints to make it the default version....
           ###########################

@@ -1,0 +1,58 @@
+
+<div>
+
+****************************************************<h1>Bugs Controller : </h1>****************************************************
+########################################################################
+<h3> Note that ! </h3>
+<h4>  - You have to provide "token" param to be authorized at our Api, otherwise you will get unauthorized message </h4>
+<h4>  - Each app can list, show and search within his bugs scope only.</h4>
+<h4>  - There are two versions of our Api (but almost the same), the only difference is "api_version" param within each response JSON.</h4>
+<h4>  - By default you will access Api/V2, but in order to access V1 you have to provide  request header "accept:version=1"</h4>
+########################################################################
+<h2>Index :get </h2>"http://localhost:3030/api/bugs/?token=any_string_simulates_one_app_token"
+<p>----The response will be json almost like that: {success: true, status: 200, bugs:[], api_version:"api/v2/bugs"}</p>
+<h2>Show :get</h2>"http://localhost:3030/api/bugs/:number?token=any_string_simulates_one_app_token"
+<p>
+    ----If found the response will be:
+    <br>
+    {'success': true, 'status': 200, 'api_version':'api/v2/bugs', bug:{'token':'app_token','number':1, 'status':'new_bug', 'priority':'major', 'comment':'your comment' }}
+    <br>
+    ----If not found the response will be:
+    <br>
+    {'success': false, 'status': 404, 'message':"Not Found", 'number':88888, 'token':'app_token', 'api_version':'api/v2/bugs'}
+</p>
+<h2>Create :post</h2>"http://localhost:3030/api/bugs/?token=any_string_simulates_one_app_token"
+  <h4>params:{token: :app_token,  bug:{token: :app_token }, state:{  devise: :sony, os: :ios, memory: 1024, storage:16000}}</h4>
+  <h4>** bug[priority] is optional and by default is 'major'</h4>
+  <h4>** bug[status] by default is 'new_bug'</h4>
+  <h4>** 'params[token]' and 'params[bug][token]' have to be the same.</h4>
+  <p>
+    ---- If params sent all are valid, the bug takes its number and the response will be:
+    <br>
+      {success: true, status: 200, message:"will Report This Issue", bug:{token: :app_token, number: 20, comment: 'your comment'} }
+    <br>
+    ---- If provided params are not valid, the response will be:
+    <br>
+    {success: false, status: 400,params:{params_you_provided }, message:'Invalid Params!', 'api_version':'api/v2/bugs' }
+  </p>
+
+
+</div>
+
+****************************************************<h1>Search Controller : </h1>****************************************************
+########################################################################
+<h3> Note that ! </h3>
+<h4>  - You have to provide "token" param to be authorized at our Api, otherwise you will get unauthorized message </h4>
+<h4>  - Each app search within his bugs scope only.</h4>
+<h4>  - You have to provide "key" and "field" params alongside with the app token for search. Or you will get error message 'No Keyword or field Provided for search!'</h4>
+<h4>  - With givin 'key' and 'field' params, our app will do search within bugs and return all bugs with field exact equal the key, except 'comment' field</h4>
+<h4>  - In case you provide some key param and 'comment' as field param, our app will do partial search with givin key in 'comment' field of bug</h4>
+<h4>  - If you provide 'number' as field param, you have to provide valid integer or you will get error message 'Not Valid keys for search!' .</h4>
+
+########################################################################
+<h2>Search :get</h2>"http://localhost:3030/api/search/?key=major&field=priority&token=any_string_simulates_one_app_token"
+<p>
+ ---- If 'key' and 'field' in placea nd valid, the response will be JSON like that:
+ <br>
+ {success: true, status: 200, api_version:'api/v2/search', bugs:[{},{},--list of bugs as json --]}
+</p>

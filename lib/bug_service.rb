@@ -11,10 +11,12 @@ class BugService
     #find $redis in intializers/redis.rb
   def self.set_new_bug(token)
     begin
-      new_num = ($redis.get(token) || (Api::V1::Bug.app_bugs token).last.try(:number)).to_i + 1
-      $redis.set(token, new_num)
-        rescue Redis::CannotConnectError
+      begin
+        new_num = ($redis.get(token) || (Api::V1::Bug.app_bugs token).last.try(:number)).to_i + 1
+        $redis.set(token, new_num)
+      rescue Redis::CannotConnectError
           puts "Connection to Redis failed..... please try again"
+      end
       new_num
     end
   end
