@@ -1,13 +1,19 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  devise: MyString
-  os: MyString
-  memory: 1
-  storage: 1
-
-two:
-  devise: MyString
-  os: MyString
-  memory: 1
-  storage: 1
+# iphone:
+#   devise: Iphone
+#   os: IOS
+#   memory: 2048
+#   storage: 32000
+#
+# sony:
+#   devise: Sony
+#   os: Android
+#   memory: 1024
+#   storage: 16000
+#
+# samsung:
+#   devise: Samsung
+#   os: Android
+#   memory: 1024
+#   storage: 8000
