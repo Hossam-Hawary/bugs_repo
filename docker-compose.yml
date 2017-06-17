@@ -3,7 +3,7 @@ services:
   elasticsearch:
     build:
       context: .
-      dockerfile: elasticsearch.Dockerfile
+      dockerfile: docker-files/elasticsearch.Dockerfile
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
   postgres:
@@ -13,11 +13,11 @@ services:
   rabbitmq:
     build:
       context: .
-      dockerfile: rabbitmq.Dockerfile
+      dockerfile: docker-files/rabbitmq.Dockerfile
   redis:
     build:
       context: .
-      dockerfile: redis.Dockerfile
+      dockerfile: docker-files/redis.Dockerfile
     # volumes:
     #   - redis:/data
   web:
