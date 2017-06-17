@@ -1,32 +1,6 @@
 require 'test_helper'
   class Api::V1::BugsControllerTest < ActionController::TestCase
 
-    test "action index is responding" do
-      get :index
-      assert_response 200
-    end
-
-    test "unauthorized app can't list bugs" do
-      get :index
-      assert_response 200
-       body_json = JSON.parse response.body
-       assert_equal( body_json['status'], 'unauthorized')
-    end
-
-    # test "authorized app can list his bugs only " do
-    #   state1 = Api::V1::State.create!({os: :ios, devise: :sony, memory: 2048, storage:16000})
-    #   state2 = Api::V1::State.create!({os: :ios, devise: :sony, memory: 1024, storage:16000})
-    #   Api::V1::Bug.create!({token: :apptoken,state:state1})
-    #   Api::V1::Bug.create!({token: :not_apptoken, state:state2})
-    #   get :index, params: {token: :apptoken}
-    #   assert_response 200
-    #    body_json = JSON.parse response.body
-    #    puts body_json
-    #    assert body_json['success']
-    #    assert body_json['bugs']
-    #    assert_equal body_json['bugs'].length, 1
-    #    assert_equal body_json['bugs'][0][:token], :apptoken
-    # end
 
         test "action create is responding" do
           get :create
@@ -98,6 +72,32 @@ require 'test_helper'
          assert body_json['bug']
       end
 
+          test "action index is responding" do
+            get :index
+            assert_response 200
+          end
+
+          test "unauthorized app can't list bugs" do
+            get :index
+            assert_response 200
+             body_json = JSON.parse response.body
+             assert_equal( body_json['status'], 'unauthorized')
+          end
+          # 
+          # test "authorized app can list his bugs only " do
+          #   state1 = Api::V1::State.create!({os: :ios, devise: :sony, memory: 2048, storage:16000})
+          #   state2 = Api::V1::State.create!({os: :ios, devise: :sony, memory: 1024, storage:16000})
+          #   Api::V1::Bug.create({token: :apptoken,state:state1})
+          #   Api::V1::Bug.create({token: :not_apptoken, state:state2})
+          #   get :index, params: {token: :apptoken}
+          #   assert_response 200
+          #    body_json = JSON.parse response.body
+          #    puts body_json
+          #    assert body_json['success']
+          #    assert body_json['bugs']
+          #    assert_equal body_json['bugs'].length, 1
+          #    assert_equal body_json['bugs'][0][:token], :apptoken
+          # end
 
 
 
