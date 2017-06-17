@@ -96,7 +96,7 @@ require 'test_helper'
           #    assert body_json['success']
           #    assert body_json['bugs']
           #    assert_equal body_json['bugs'].length, 1
-          #    assert_equal body_json['bugs'][0][:token], :apptoken
+          #    assert_equal body_json['bugs'][0]['token'], :apptoken
           # end
 
 

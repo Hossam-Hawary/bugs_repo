@@ -56,7 +56,7 @@ module Api::V1
     #find RabbitMg in intializers/bunny.rb
     def report_new_bug
       bug_num = BugService.set_new_bug bug_params['token']
-      if bug_num
+      if bug_num.present?
         new_bug_params =  bug_params
         new_bug_params['number'] = bug_num
         RabbitMg.send_message("{bug_params:#{new_bug_params.to_json},state_params:#{state_params.to_json}}")
