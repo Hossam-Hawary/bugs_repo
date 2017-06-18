@@ -2,6 +2,7 @@ module Api::V1
 
   class BugsController < ApplicationController
     skip_before_action :verify_authenticity_token
+    before_action :load_bug, only: [:show]
 
     def index
         @bugs = (Api::V1::Bug.where(token:params['token'])).to_a.map! {|bug|  bug.bug_as_json}
@@ -17,7 +18,6 @@ module Api::V1
     end
 
     def show
-      @bug = Api::V1::Bug.find_by(  token:params['token'], number:params['number'])
       if @bug
         render :json => {success: true, status: 200, api_version:params[:controller], bug:@bug.bug_as_json }
       else
@@ -26,13 +26,6 @@ module Api::V1
 
     end
 
-    def update
-      render :json => {success: true, status: 200, action:'update', api_version:params[:controller]}
-    end
-
-    def destroy
-      render :json => {success: true, status: 200, action:'destroy', api_version:params[:controller]}
-    end
 
     ############
     protected
@@ -50,6 +43,10 @@ module Api::V1
 
     def state_params
       params.require('state').permit(:devise, :os, :memory, :storage)
+    end
+
+    def load_bug
+      @bug = Api::V1::Bug.find_by( token:params['token'], number:params['number'])
     end
 
     #find BugService in lib/bug_service.rb
